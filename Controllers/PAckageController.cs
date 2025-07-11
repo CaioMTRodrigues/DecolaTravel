@@ -3,7 +3,7 @@ using System;
 
 namespace DecolaTravel.Controllers
 {
-    internal class PackageController
+    public class PackageController
     //Define que essa classe é um controlador de API.
     //A rota base será api/pacotes.
     [ApiController]
