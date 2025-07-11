@@ -1,0 +1,6 @@
+@DecolaTravel_HostAddress = http://localhost:5211
+
+GET {{DecolaTravel_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
