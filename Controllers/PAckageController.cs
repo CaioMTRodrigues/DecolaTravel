@@ -68,9 +68,15 @@ namespace DecolaTravel.Controllers
         * Retorna o pacote criado com status 201 (Created).
         */
 
+
         [HttpPost]
-        public async Task<ActionResult<Package>> CreatePackage(PackageDto dto)
+        public async Task<ActionResult<Package>> CreatePacote([FromBody] PackageDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var newPackage = new Package
             {
                 Titulo = dto.Titulo,
@@ -86,8 +92,9 @@ namespace DecolaTravel.Controllers
             _context.Packages.Add(newPackage);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPackage), new { id = newPackage.Id }, newPackage);
+            return CreatedAtAction(nameof(GetPacote), new { id = newPackage.Id }, newPackage);
         }
+
 
         /*
          * Atualiza os dados de um pacote existente.
