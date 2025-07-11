@@ -7,8 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace DecolaTravel.Controllers
-{
-    
+{    
     //Define que essa classe é um controlador de API.
     //A rota base será api/pacotes.
     [ApiController]
