@@ -7,7 +7,7 @@ namespace DecolaTravel.Dtos
      * um pacote de viagem. Ela é usada para transferir informações entre o 
      * cliente e a API, garantindo que os dados estejam no formato esperado. 
      */
-    public class PacoteDto
+    public class PacakgeDto
     {
         [Required]
         public string Titulo { get; set; }
