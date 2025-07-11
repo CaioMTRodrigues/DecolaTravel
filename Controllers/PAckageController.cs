@@ -1,31 +1,42 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DecolaTravel.Data;
+using DecolaTravel.Dtos;
+using DecolaTravel.Exceptions;
+using DecolaTravel.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace DecolaTravel.Controllers
 {
-    public class PackageController
+    
     //Define que essa classe é um controlador de API.
     //A rota base será api/pacotes.
     [ApiController]
-    [Route("api/[controller]")]
-    public class PacotesController : ControllerBase
+    [Route("api/packages")]
+    public class PackageController : ControllerBase
     {
         //Injeta o contexto do banco de dados para acessar os dados dos pacotes.
         private readonly AppDbContext _context;
 
-        public PacotesController(AppDbContext context)
+        public PackageController(AppDbContext context)
         {
             _context = context;
         }
 
-        //Permite buscar pacotes com filtros opcionais: destino, data e preço máximo.
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pacote>>> GetPacotes(
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<Package>>> GetAllPacotes()
+        {
+                return await _context.Packages.ToListAsync();
+        }
+
+            //Permite buscar pacotes com filtros opcionais: destino, data e preço máximo.
+            [HttpGet]
+        public async Task<ActionResult<IEnumerable<Package>>> GetPacotes(
             [FromQuery] string? destino,
             [FromQuery] DateTime? data,
             [FromQuery] decimal? precoMax)
         {
-            var query = _context.Pacotes.AsQueryable();
+            var query = _context.Packages.AsQueryable();
 
             if (!string.IsNullOrEmpty(destino))
                 query = query.Where(p => p.Destino.Contains(destino));
@@ -45,11 +56,11 @@ namespace DecolaTravel.Controllers
          */
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pacote>> GetPacote(int id)
+        public async Task<ActionResult<Package>> GetPacote(int id)
         {
-            var pacote = await _context.Pacotes.FindAsync(id);
+            var pacote = await _context.Packages.FindAsync(id);
 
-            if (pacote == null) throw new PacoteNotFoundException(id); // Chama a classe pra que trata isso 
+            if (pacote == null) throw new PackageNotFoundException(id); // Chama a classe pra que trata isso 
             return pacote;
         }
 
@@ -59,9 +70,9 @@ namespace DecolaTravel.Controllers
         */
 
         [HttpPost]
-        public async Task<ActionResult<Pacote>> CreatePacote(PacoteCreateDto dto)
+        public async Task<ActionResult<Package>> CreatePacote(PackageDto dto)
         {
-            var pacote = new Pacote
+            var newPackage = new Package
             {
                 Titulo = dto.Titulo,
                 Descricao = dto.Descricao,
@@ -73,10 +84,10 @@ namespace DecolaTravel.Controllers
                 ImagemUrl = dto.ImagemUrl
             };
 
-            _context.Pacotes.Add(pacote);
+            _context.Packages.Add(newPackage);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPacote), new { id = pacote.Id }, pacote);
+            return CreatedAtAction(nameof(GetPacote), new { id = newPackage.Id }, newPackage);
         }
 
         /*
@@ -85,9 +96,9 @@ namespace DecolaTravel.Controllers
          */
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePacote(int id, PacoteCreateDto dto)
+        public async Task<IActionResult> UpdatePacote(int id, PackageDto dto)
         {
-            var pacote = await _context.Pacotes.FindAsync(id);
+            var pacote = await _context.Packages.FindAsync(id);
             if (pacote == null)
                 return NotFound();
 
@@ -112,10 +123,10 @@ namespace DecolaTravel.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePacote(int id)
         {
-            var pacote = await _context.Pacotes.FindAsync(id);
-            if (pacote == null) throw new PacoteNotFoundException(id); // Chama a classe pra que trata isso 
+            var pacote = await _context.Packages.FindAsync(id);
+            if (pacote == null) throw new PackageNotFoundException(id); // Chama a classe pra que trata isso 
 
-            _context.Pacotes.Remove(pacote);
+            _context.Packages.Remove(pacote);
             await _context.SaveChangesAsync();
 
             return NoContent();
