@@ -23,14 +23,14 @@ namespace DecolaTravel.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<Package>>> GetAllPacotes()
+        public async Task<ActionResult<IEnumerable<Package>>> GetAllPackage()
         {
                 return await _context.Packages.ToListAsync();
         }
 
             //Permite buscar pacotes com filtros opcionais: destino, data e preço máximo.
             [HttpGet]
-        public async Task<ActionResult<IEnumerable<Package>>> GetPacotes(
+        public async Task<ActionResult<IEnumerable<Package>>> GetPackage(
             [FromQuery] string? destino,
             [FromQuery] DateTime? data,
             [FromQuery] decimal? precoMax)
@@ -55,12 +55,12 @@ namespace DecolaTravel.Controllers
          */
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Package>> GetPacote(int id)
+        public async Task<ActionResult<Package>> GetPackage(int id)
         {
-            var pacote = await _context.Packages.FindAsync(id);
+            var package = await _context.Packages.FindAsync(id);
 
-            if (pacote == null) throw new PackageNotFoundException(id); // Chama a classe pra que trata isso 
-            return pacote;
+            if (package == null) throw new PackageNotFoundException(id); // Chama a classe pra que trata isso 
+            return package;
         }
 
         /*
@@ -69,7 +69,7 @@ namespace DecolaTravel.Controllers
         */
 
         [HttpPost]
-        public async Task<ActionResult<Package>> CreatePacote(PackageDto dto)
+        public async Task<ActionResult<Package>> CreatePackage(PackageDto dto)
         {
             var newPackage = new Package
             {
@@ -86,7 +86,7 @@ namespace DecolaTravel.Controllers
             _context.Packages.Add(newPackage);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPacote), new { id = newPackage.Id }, newPackage);
+            return CreatedAtAction(nameof(GetPackage), new { id = newPackage.Id }, newPackage);
         }
 
         /*
@@ -95,20 +95,20 @@ namespace DecolaTravel.Controllers
          */
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePacote(int id, PackageDto dto)
+        public async Task<IActionResult> UpdatePackage(int id, PackageDto dto)
         {
-            var pacote = await _context.Packages.FindAsync(id);
-            if (pacote == null)
+            var package = await _context.Packages.FindAsync(id);
+            if (package == null)
                 return NotFound();
 
-            pacote.Titulo = dto.Titulo;
-            pacote.Descricao = dto.Descricao;
-            pacote.Destino = dto.Destino;
-            pacote.DuracaoDias = dto.DuracaoDias;
-            pacote.DataInicio = dto.DataInicio;
-            pacote.DataFim = dto.DataFim;
-            pacote.Valor = dto.Valor;
-            pacote.ImagemUrl = dto.ImagemUrl;
+            package.Titulo = dto.Titulo;
+            package.Descricao = dto.Descricao;
+            package.Destino = dto.Destino;
+            package.DuracaoDias = dto.DuracaoDias;
+            package.DataInicio = dto.DataInicio;
+            package.DataFim = dto.DataFim;
+            package.Valor = dto.Valor;
+            package.ImagemUrl = dto.ImagemUrl;
 
             await _context.SaveChangesAsync();
 
@@ -120,12 +120,12 @@ namespace DecolaTravel.Controllers
          */
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePacote(int id)
+        public async Task<IActionResult> DeletePackage(int id)
         {
-            var pacote = await _context.Packages.FindAsync(id);
-            if (pacote == null) throw new PackageNotFoundException(id); // Chama a classe pra que trata isso 
+            var package = await _context.Packages.FindAsync(id);
+            if (package == null) throw new PackageNotFoundException(id); // Chama a classe pra que trata isso 
 
-            _context.Packages.Remove(pacote);
+            _context.Packages.Remove(package);
             await _context.SaveChangesAsync();
 
             return NoContent();
