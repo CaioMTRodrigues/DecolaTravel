@@ -17,6 +17,6 @@ namespace DecolaTravel.Data
          * DbSet<Pacote> Pacotes: Representa a tabela de pacotes no banco de dados, 
          * permitindo consultas e operações CRUD.
          */
-        public DbSet<Pacote> Pacotes { get; set; }
+        public DbSet<Models.Package> Packages { get; set; }
     }
 }
