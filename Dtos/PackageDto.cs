@@ -9,7 +9,8 @@ namespace DecolaTravel.Dtos
      */
     public class PackageDto
     {
-        [Required]
+
+        [Required(ErrorMessage = "O campo Título é obrigatório.")]
         public string Titulo { get; set; }
 
         [Required]

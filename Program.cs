@@ -5,10 +5,11 @@ using DecolaTravel.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Serviços
+// Serviços 
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<HttpResponseExceptionFilter>();
+    options.Filters.Add<ValidationFilter>();
 });
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
