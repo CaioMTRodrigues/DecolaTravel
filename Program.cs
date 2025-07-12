@@ -1,5 +1,6 @@
 using DecolaTravel.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using DecolaTravel.Filters;
 using DecolaTravel.Middlewares;
 
@@ -8,8 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Serviços 
 builder.Services.AddControllers(options =>
 {
-    options.Filters.Add<HttpResponseExceptionFilter>();
     options.Filters.Add<ValidationFilter>();
+    options.Filters.Add<HttpResponseExceptionFilter>();
+});
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
 });
 
 builder.Services.AddDbContext<AppDbContext>(opt =>

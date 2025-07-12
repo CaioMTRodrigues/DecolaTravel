@@ -13,7 +13,7 @@ namespace DecolaTravel.Dtos
         [Required(ErrorMessage = "O campo Título é obrigatório.")]
         public string Titulo { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo Descrição é obrigatório.")]
         public string Descricao { get; set; }
 
         [Required]
